@@ -1,19 +1,39 @@
 const feedbackForm = document.querySelector(".feedback-form");
-let emailInput = document.querySelector(".feedback-form label input");
-let massageText = document.querySelector(".feedback-form label textarea");
-const sendButton = document.querySelector(".feedback-form button");
-let getlocalData = JSON.parse(localStorage.getItem("feedback-form-state"));
+let formDataFromEL = {}; // Пустий обєкт - варто врахувати при перезавантаженні форми
 
+const fillFormFields = () => {
+    const formDataFromLS = JSON.parse(localStorage.getItem("feedback-form-state"));
+    
+    if (formDataFromLS === null) { // local storage is empty?
+        return;
+    }
+    formDataFromEL = formDataFromLS; // Заповнюємо пустий обєкт щоб не втрачати дані у властивостях
 
-
-const localData = {};
-const inputText = (event) => {
-    const emailKey = event.target.name;
-    const text = event.target.value.trim();
-    localData[emailKey] = text;
-    localStorage.setItem("feedback-form-state", JSON.stringify(localData));
+  for (const key in formDataFromLS) {
+    if (formDataFromLS.hasOwnProperty(key)) {
+      feedbackForm.elements[key].value = formDataFromLS[key];
+    }
+  }
 }
+fillFormFields();
+
+const inputText = (event) => {
+    const propKey = event.target.name;
+    const propValue = event.target.value.trim();
+    feedbackForm.elements[propKey].value = propValue;
+    formDataFromEL[propKey] = propValue;
+    localStorage.setItem("feedback-form-state", JSON.stringify(formDataFromEL));
+}
+
+const onSubmit = (event) => {
+    console.log(formDataFromEL);
+    event.preventDefault();
+    event.target.reset();
+    localStorage.removeItem("feedback-form-state");
+}
+
 feedbackForm.addEventListener("input", inputText);
+feedbackForm.addEventListener("submit", onSubmit);
 
 
 
