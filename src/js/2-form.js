@@ -18,20 +18,22 @@ const fillFormFields = () => {
 fillFormFields();
 
 const inputText = (event) => {
-    const propKey = event.target.name;
-    const propValue = event.target.value.trim();
-    feedbackForm.elements[propKey].value = propValue;
-    formDataFromEL[propKey] = propValue;
-    localStorage.setItem("feedback-form-state", JSON.stringify(formDataFromEL));
-}
+  const propKey = event.target.name;
+  formDataFromEL[propKey] = feedbackForm.elements[propKey].value.trim();
+  localStorage.setItem("feedback-form-state", JSON.stringify(formDataFromEL));
+  }
 
 const onSubmit = (event) => {
+  if ((formDataFromEL.email === undefined || formDataFromEL.message === undefined) || (formDataFromEL.email === "" || formDataFromEL.message === "")) {
+    return alert("Fill please all fields");
+  } else {
     console.log(formDataFromEL);
     event.preventDefault();
     event.target.reset();
+    formDataFromEL = {};
     localStorage.removeItem("feedback-form-state");
+  }
 }
-
 feedbackForm.addEventListener("input", inputText);
 feedbackForm.addEventListener("submit", onSubmit);
 
