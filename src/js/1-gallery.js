@@ -92,7 +92,5 @@ let gallery = new SimpleLightbox(".gallery li a", {
   captionClass: "style-caption",
     captionsData: 'alt', 
     captionDelay: 250, 
-    animationSpeed: 300, 
-    fadeSpeed: 400, 
     disableRightClick: true,
 });
